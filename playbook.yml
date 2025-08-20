@@ -1,0 +1,19 @@
+---
+- name: Configure web server
+  hosts: myvms        
+  become: yes        
+  tasks:
+    # - name: Ensure APT cache is up to date
+    #   ansible.builtin.apt:
+    #     update_cache: yes
+
+    - name: Install Apache2
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+
+    - name: Enable and start Apache2 service
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: yes
