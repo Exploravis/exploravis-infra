@@ -72,6 +72,28 @@ resource "azurerm_network_security_group" "az_sg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+  security_rule {
+    name                       = "K3s-API"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "6443"
+    source_address_prefix      = "*"   
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "Allow-Internal"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = azurerm_virtual_network.vnet.address_space[0] 
+    destination_address_prefix = "*"
+  }
 
   tags = {
     environment = "Production"
@@ -108,9 +130,9 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
 
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts-gen2"
+    publisher = "Debian"
+    offer     = "debian-11"
+    sku       = "11-gen2"
     version   = "latest"
   }
 }
