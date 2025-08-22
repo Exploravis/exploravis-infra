@@ -32,12 +32,15 @@
         state: present
         update_cache: yes
 
-    - name: Install K3s server
-      ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -
+    - name: Install K3s server without starting the service
+      ansible.builtin.shell: curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_START=true K3S_OPTIONS="--cgroup-driver=cgroupfs" sh -
       args:
         creates: /usr/local/bin/k3s
       register: k3s_install_result
-      changed_when: k3s_install_result.rc != 0
+
+    - name: Pause for a few seconds to let systemd register the service
+      ansible.builtin.pause:
+        seconds: 5
 
     - name: Ensure K3s service is running and enabled
       ansible.builtin.systemd:
