@@ -38,18 +38,19 @@ resource "azurerm_linux_virtual_machine" "vm" {
     public_key = file(var.ssh_public_key)
   }
 
+
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    disk_size_gb         = var.disk_size
+    disk_size_gb         = 30
   }
 
-source_image_reference {
-  publisher = "Debian"
-  offer     = "debian-12"
-  sku       = "12-gen2"
-  version   = "latest"
-}
+  source_image_reference {
+    publisher = "Debian"
+    offer     = "debian-12"
+    sku       = "12-gen2"
+    version   = "latest"
+  }
 }
 
 

@@ -4,8 +4,3 @@ variable "az_instance_size" {
   default     = "Standard_B1ms"
 }
 
-variable "az_disk_size" {
-  description = "azure disk size"
-  type        = number
-  default     = 30
-}
