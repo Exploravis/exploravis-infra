@@ -1,0 +1,9 @@
+variable "vm_name" {}
+variable "vm_size" {}
+variable "disk_size" {}
+variable "admin_username" {}
+variable "ssh_public_key" {}
+variable "resource_group_name" {}
+variable "location" {}
+variable "subnet_id" {}
+variable "nsg_id" {}
