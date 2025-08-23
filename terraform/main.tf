@@ -13,24 +13,19 @@ provider "azurerm" {
 }
 
 
-module "spain-cl" {
-  source = "./modules/cluster"
-  cluster_name   = "spain-cluster"
-  region         = "spaincentral"
-  worker_count   = 3
-  vm_size        = "Standard_B1ms"
-  disk_size      = 30 
-  ssh_public_key = "~/.ssh/id_rsa.pub"
+
+
+module "clusters" {
+  source   = "./modules/cluster"
+  for_each = var.clusters
+
+  # cluster_key    = each.key
+  cluster_name   = "${each.key}-cluster"
+  region         = each.value.region
+  worker_count   = each.value.worker_count
+  instance_size  = each.value.vm_size
+  disk_size      = each.value.disk_size
+  ssh_public_key = each.value.ssh_public_key
+  admin_username = each.value.ssh_public_key
+  # tags           = each.value.tags
 }
-
-module "southuk-cl" {
-  source = "./modules/cluster"
-  cluster_name   = "uksouth-cluster"
-  region         = "uksouth"
-  worker_count   = 1 
-  vm_size        = "Standard_B1ms"
-  disk_size      = 30 
-  ssh_public_key = "~/.ssh/id_rsa.pub"
-}
-
-
