@@ -52,6 +52,10 @@ resource "azurerm_network_security_group" "nsg" {
     source_address_prefix      = var.address_space[0]
     destination_address_prefix = "*"
   }
+  #   depends_on = [
+  #       module.vm.nic_id,
+  #       azurerm_subnet.subnet
+  # ]
 }
 
 output "subnet_id" {

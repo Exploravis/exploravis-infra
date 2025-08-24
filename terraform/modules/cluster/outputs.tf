@@ -1,8 +1,15 @@
-output "master_ip" {
-  value = module.master.public_ip
+output "master" {
+  value = {
+    name      = module.master.vm_name
+    public_ip = module.master.public_ip
+  }
 }
 
-output "worker_ips" {
-  value = [for worker in module.workers : worker.public_ip]
+output "workers" {
+  value = [
+    for w in module.workers : {
+      name      = w.vm_name
+      public_ip = w.public_ip
+    }
+  ]
 }
-

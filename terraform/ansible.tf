@@ -16,10 +16,10 @@ resource "local_file" "ansible_inventory_per_cluster" {
   filename = "${local.inventory_dir}/${each.key}_inventory.ini"
 
   content = <<EOT
-[${each.key}_master]
+[master]
 ${each.value.master.name} ansible_host=${each.value.master.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.ansible_ssh_private_key_file}
 
-[${each.key}_workers]
+[workers]
 %{for w in each.value.workers~}
 ${w.name} ansible_host=${w.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.ansible_ssh_private_key_file}
 %{endfor~}

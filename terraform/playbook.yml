@@ -46,8 +46,10 @@
   hosts: workers
   become: true
   vars:
-    k3s_master_ip: "{{hostvars['master']['ansible_host']}}"
+    # k3s_master_ip: "{{hostvars['master']['ansible_host']}}"
+    k3s_master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
+
   tasks:
     - name: Install k3s agent
       shell: |
-        curl -sfL https://get.k3s.io | K3S_URL=https://{{ k3s_master_ip }}:6443 K3S_TOKEN={{ hostvars['master']['k3s_token'] }} sh -
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ k3s_master_ip }}:6443 K3S_TOKEN={{ hostvars[groups['master'][0]]['k3s_token'] }} sh -
