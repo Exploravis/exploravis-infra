@@ -30,6 +30,7 @@ module "master" {
   location            = azurerm_resource_group.rg.location
   subnet_id           = module.network.subnet_id
   nsg_id              = module.network.nsg_id
+  depends_on = [module.network]
 }
 
 # Worker 
@@ -45,6 +46,8 @@ module "workers" {
   location            = azurerm_resource_group.rg.location
   subnet_id           = module.network.subnet_id
   nsg_id              = module.network.nsg_id
+
+  depends_on = [module.network]
 }
 
 

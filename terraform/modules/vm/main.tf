@@ -1,3 +1,4 @@
+
 resource "azurerm_public_ip" "public_ip" {
   name                = "${var.vm_name}-public-ip"
   resource_group_name = var.resource_group_name
@@ -19,18 +20,13 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "nic_sg" {
-  network_interface_id      = azurerm_network_interface.nic.id
-  network_security_group_id = var.nsg_id
-}
-
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                            = var.vm_name
-  resource_group_name             = var.resource_group_name
-  location                        = var.location
-  size                            = var.vm_size
-  network_interface_ids           = [azurerm_network_interface.nic.id]
-  admin_username                  = var.admin_username
+  name                  = var.vm_name
+  resource_group_name   = var.resource_group_name
+  location              = var.location
+  size                  = var.vm_size
+  network_interface_ids = [azurerm_network_interface.nic.id]
+  admin_username        = var.admin_username
   disable_password_authentication = true
 
   admin_ssh_key {
@@ -38,11 +34,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
     public_key = var.ssh_public_key
   }
 
-
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    disk_size_gb         = 30
+    disk_size_gb         = var.disk_size
   }
 
   source_image_reference {
@@ -51,10 +46,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "12-gen2"
     version   = "latest"
   }
+
+  # Ensure Terraform waits for NIC to be ready
+  depends_on = [azurerm_network_interface.nic]
 }
 
-
-output "nic_id" {
-  value = azurerm_network_interface.nic.id
+resource "azurerm_network_interface_security_group_association" "nic_sg" {
+  network_interface_id      = azurerm_network_interface.nic.id
+  network_security_group_id = var.nsg_id
 }
-
