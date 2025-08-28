@@ -8,7 +8,8 @@ ARTIFACTS_DIR="$ROOT_DIR/ansible/inventories"
 PLAYBOOK="$ROOT_DIR/ansible/playbooks/playbook.yml"
 ANSIBLE_CFG="$ROOT_DIR/ansible/ansible.cfg"
 
-echo "$ROOT_DIR"
-echo "$ARTIFACTS_DIR"
+mkdir -p "$ARTIFACTS_DIR"
+echo "ROOT_DIR:$ROOT_DIR"
+echo "ARTIFACTS_DIR:$ARTIFACTS_DIR"
 
 terraform -chdir="$TF_DIR" output -json | python3 "$PY_SCRIPT" --output-dir="$ARTIFACTS_DIR"
