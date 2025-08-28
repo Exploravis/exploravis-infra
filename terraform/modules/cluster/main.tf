@@ -47,7 +47,7 @@ module "workers" {
   subnet_id           = module.network.subnet_id
   nsg_id              = module.network.nsg_id
 
-  depends_on = [module.network]
+  depends_on = [module.network, module.master]
 }
 
 
