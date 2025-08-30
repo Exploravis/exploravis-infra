@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Root directory of your project
 ROOT_DIR="$(pwd)"
 INVENTORY_DIR="$ROOT_DIR/ansible/inventories"
 PLAYBOOK="$ROOT_DIR/ansible/playbooks/playbook.yml"
@@ -11,7 +10,9 @@ export ANSIBLE_CONFIG="$ANSIBLE_CFG"
 
 echo "Using inventories from: $INVENTORY_DIR"
 echo "Using playbook: $PLAYBOOK"
+echo "----------------------------------------"
 
+shopt -s nullglob
 for inventory_file in "$INVENTORY_DIR"/*; do
   if [[ -f "$inventory_file" ]]; then
     echo "Running playbook on inventory: $inventory_file"

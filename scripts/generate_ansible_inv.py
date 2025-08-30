@@ -34,7 +34,7 @@ for cluster_name, cluster in clusters.items():
     master_ip = cluster["master_ip"]
     master_name = cluster_name + "-master"
     lines.append(
-        "%s ansible_host=%s ansible_user=%s ansible_ssh_private_key_file=%s"
+        "%s ansible_host=%s ansible_user=%s ansible_ssh_private_key_file=%s ansible_ssh_common_args='-o IdentitiesOnly=yes'"
         % (master_name, master_ip, cluster["admin_username"], key_path)
     )
 
@@ -45,7 +45,7 @@ for cluster_name, cluster in clusters.items():
         worker_name = worker["name"]
         worker_ip = worker["public_ip"]
         lines.append(
-            "%s ansible_host=%s ansible_user=%s ansible_ssh_private_key_file=%s"
+            "%s ansible_host=%s ansible_user=%s ansible_ssh_private_key_file=%s ansible_ssh_common_args='-o IdentitiesOnly=yes'"
             % (worker_name, worker_ip, cluster["admin_username"], key_path)
         )
     lines.append("")

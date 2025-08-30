@@ -20,12 +20,12 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                  = var.vm_name
-  resource_group_name   = var.resource_group_name
-  location              = var.location
-  size                  = var.vm_size
-  network_interface_ids = [azurerm_network_interface.nic.id]
-  admin_username        = var.admin_username
+  name                            = var.vm_name
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  size                            = var.vm_size
+  network_interface_ids           = [azurerm_network_interface.nic.id]
+  admin_username                  = var.admin_username
   disable_password_authentication = true
 
   admin_ssh_key {
@@ -45,6 +45,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "12-gen2"
     version   = "latest"
   }
+  tags = var.tags
 
   depends_on = [
     azurerm_network_interface.nic
