@@ -4,7 +4,7 @@ resource "azurerm_public_ip" "public_ip" {
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"
-  depends_on = [azurerm_network_interface.nic]
+
 }
 
 resource "azurerm_network_interface" "nic" {

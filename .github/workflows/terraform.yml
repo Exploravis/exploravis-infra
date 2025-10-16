@@ -35,7 +35,7 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-      - run: terraform apply -auto-approve tfplan
+      - run: terraform apply -auto-approve tfplan -parallelism=1
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
