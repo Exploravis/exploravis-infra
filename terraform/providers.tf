@@ -10,7 +10,7 @@ terraform {
     organization = "WaspCloud"
 
     workspaces {
-      name = "k3s-terraform-ansible-cluster"
+      name = "Exploravis"
     }
   }
 }
