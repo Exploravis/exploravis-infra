@@ -48,7 +48,9 @@ jobs:
         run: bash ./scripts/generate_ansible_inv.sh     
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+        working-directory: .
 
 
       - name: Run ansible inventory
         run: bash ./scripts/run_ansible_inv.sh     
+        working-directory: .
