@@ -183,7 +183,6 @@
         fi
       args:
         executable: /bin/bash
-        warn: false
       changed_when: false
 
     - name: Slurp invite/password file
