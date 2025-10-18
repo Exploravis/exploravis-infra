@@ -75,3 +75,37 @@ jobs:
 
         - name: Run Ansible Inventory
           run: bash ./scripts/run_ansible_inv.sh
+
+
+  teleport:
+      name: Install and setup Teleport with github 
+      runs-on: ubuntu-latest
+      needs: terraform   
+      env:
+        TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      defaults:
+        run:
+          working-directory: .
+
+      steps:
+        - name: Checkout repo
+          uses: actions/checkout@v2
+
+
+        - uses: hashicorp/setup-terraform@v3
+          with:
+            terraform_version: latest
+
+        - run: terraform init -reconfigure
+          working-directory: ./terraform
+
+
+        - name: Generate ansible inventory
+          run: bash ./scripts/generate_ansible_inv.sh     
+
+        - name: Run Ansible Inventory
+          run: bash ./scripts/setup_teleport.sh
