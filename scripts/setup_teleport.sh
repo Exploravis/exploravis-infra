@@ -9,7 +9,6 @@ ANSIBLE_CFG="$ROOT_DIR/ansible/ansible.cfg"
 export ANSIBLE_CONFIG="$ANSIBLE_CFG"
 
 echo "Using inventories from: $INVENTORY_DIR"
-echo "Using playbook: $PLAYBOOK"
 echo "----------------------------------------"
 
 shopt -s nullglob
