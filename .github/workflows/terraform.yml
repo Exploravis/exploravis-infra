@@ -59,6 +59,8 @@ jobs:
             terraform_version: latest
 
         - run: terraform init -reconfigure
+          working-directory: ./terraform
+
 
         - name: Generate ansible inventory
           run: bash ./scripts/generate_ansible_inv.sh     
