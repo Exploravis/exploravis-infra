@@ -33,9 +33,6 @@ jobs:
       - run: terraform apply -auto-approve tfplan
 
 
-      # - name: Generate ansible inventory
-      #   run: bash ./scripts/generate_ansible_inv.sh     
-      #   working-directory: .
 
 
   ansible:
@@ -55,6 +52,11 @@ jobs:
       steps:
         - name: Checkout repo
           uses: actions/checkout@v2
+
+
+        - uses: hashicorp/setup-terraform@v3
+          with:
+            terraform_version: latest
 
         - name: Generate ansible inventory
           run: bash ./scripts/generate_ansible_inv.sh     
