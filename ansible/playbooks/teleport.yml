@@ -4,7 +4,7 @@
   become: yes
   vars:
     teleport_version: "16.2.0"
-    teleport_user: "troottp4"
+    teleport_user: "eateam"
     teleport_token: "devtoken"
     teleport_data_dir: "/var/lib/teleport"
     teleport_log: "/var/log/teleport.log"
