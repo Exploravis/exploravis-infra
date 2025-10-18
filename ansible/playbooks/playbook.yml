@@ -42,6 +42,23 @@
         state: started
         enabled: yes
 
+    # - name: Add Teleport repo
+    #   ansible.builtin.shell: |
+    #     curl https://apt.releases.teleport.dev/gpg | gpg --dearmor | tee /usr/share/keyrings/teleport-archive-keyring.gpg > /dev/null
+    #     echo "deb [signed-by=/usr/share/keyrings/teleport-archive-keyring.gpg] https://apt.releases.teleport.dev/stable/debian $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/teleport.list
+    #
+    # - name: Install Teleport
+    #   ansible.builtin.apt:
+    #     name: teleport
+    #     state: present
+    #     update_cache: yes
+    #
+    # - name: Enable and start Teleport
+    #   ansible.builtin.systemd:
+    #     name: teleport
+    #     enabled: yes
+    #     state: started
+
 - name: Setup k3s workers 
   hosts: workers
   become: true

@@ -1,0 +1,197 @@
+---
+- name: Install and start Teleport on master (use default data dir)
+  hosts: master
+  become: yes
+  vars:
+    teleport_version: "16.2.0"
+    teleport_user: "troottp4"
+    teleport_token: "devtoken"
+    teleport_data_dir: "/var/lib/teleport"
+    teleport_log: "/var/log/teleport.log"
+    teleport_cfg: "/etc/teleport/teleport.yaml"
+
+  tasks:
+    - name: Ensure Teleport data dir exists (default)
+      ansible.builtin.file:
+        path: "{{ teleport_data_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Ensure /etc/teleport exists
+      ansible.builtin.file:
+        path: /etc/teleport
+        state: directory
+        owner: root
+        mode: '0755'
+
+    - name: Download Teleport binary tarball
+      ansible.builtin.get_url:
+        url: "https://get.gravitational.com/teleport-v{{ teleport_version }}-linux-amd64-bin.tar.gz"
+        dest: /tmp/teleport.tar.gz
+        mode: '0644'
+
+    - name: Extract Teleport tarball on remote
+      ansible.builtin.unarchive:
+        src: /tmp/teleport.tar.gz
+        dest: /tmp/
+        remote_src: yes
+
+    - name: Copy Teleport binaries to /usr/local/bin
+      ansible.builtin.copy:
+        src: "/tmp/teleport/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        mode: '0755'
+        remote_src: yes
+      loop:
+        - teleport
+        - tctl
+        - tsh
+
+    - name: Kill any stale Teleport process (safe)
+      ansible.builtin.shell: |
+        p=$(pgrep -f "/usr/local/bin/teleport") || true
+        if [ -n "$p" ]; then
+          pkill -f "/usr/local/bin/teleport" || true
+          sleep 1
+        fi
+      args:
+        executable: /bin/bash
+      changed_when: false
+      ignore_errors: true
+
+    - name: Write minimal teleport config (single-node, uses default /var/lib/teleport)
+      ansible.builtin.copy:
+        dest: "{{ teleport_cfg }}"
+        mode: '0644'
+        content: |
+          version: v3
+          teleport:
+            nodename: "{{ inventory_hostname }}"
+            data_dir: {{ teleport_data_dir }}
+            log:
+              output: stderr
+              severity: INFO
+          auth_service:
+            enabled: yes
+            cluster_name: ephemeral-cluster
+            listen_addr: 0.0.0.0:3023
+            authentication:
+              type: github
+          proxy_service:
+            enabled: yes
+            web_listen_addr: 0.0.0.0:3080
+            tunnel_listen_addr: 0.0.0.0:3024
+            public_addr: "{{ ansible_host }}:3080"
+          ssh_service:
+            enabled: yes
+
+
+    - name: Write GitHub connector configuration
+      ansible.builtin.copy:
+        dest: /etc/teleport/github.yaml
+        mode: '0644'
+        content: |
+          kind: github
+          version: v3
+          metadata:
+            name: github
+          spec:
+            client_id: "Ov23li4CcbWFxrcVPxoO"
+            client_secret: "126d818395d512a15ac95f43e056684d9398dc38"
+            redirect_url: "https://{{ ansible_host }}:3080/v1/webapi/github/callback"
+            display: "GitHub"
+            teams_to_roles:
+              - organization: "Exploravis"
+                team: "ea-team"
+                roles: ["admin"]
+
+    - name: Start Teleport (detached) and write pid
+      ansible.builtin.shell: |
+        nohup /usr/local/bin/teleport start --config={{ teleport_cfg }} > {{ teleport_log }} 2>&1 &
+        echo $! > /var/run/teleport.pid
+      args:
+        executable: /bin/bash
+
+
+    - name: Wait for Teleport auth port (long timeout)
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 3023
+        delay: 2
+        timeout: 180
+
+    - name: Wait for host_uuid file (Auth fully initialized)
+      ansible.builtin.wait_for:
+        path: "{{ teleport_data_dir }}/host_uuid"
+        state: present
+        timeout: 120
+
+    - name: Wait for Teleport proxy port (extra check)
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 3080
+        delay: 1
+        timeout: 60
+
+    - name: Ensure local linux user exists
+      ansible.builtin.user:
+        name: "{{ teleport_user }}"
+        shell: /bin/bash
+        state: present
+
+
+    - name: Create admin role file
+      ansible.builtin.copy:
+        dest: /tmp/admin-role.yaml
+        content: |
+          kind: role
+          version: v5
+          metadata:
+            name: admin
+          spec:
+            allow:
+              logins: ["{{ teleport_user }}", "root", "azureuser"]
+              node_labels:
+                "*": "*"
+        mode: '0644'
+
+    - name: Apply admin role (use TELEPORT_DATA_DIR)
+      ansible.builtin.shell: |
+        export TELEPORT_DATA_DIR={{ teleport_data_dir }}
+        export TELEPORT_AUTH_SERVER=127.0.0.1:3023
+        tctl create -f /tmp/admin-role.yaml --force
+      args:
+        executable: /bin/bash
+
+
+    - name: Apply GitHub connector
+      ansible.builtin.shell: |
+        export TELEPORT_DATA_DIR={{ teleport_data_dir }}
+        export TELEPORT_AUTH_SERVER=127.0.0.1:3023
+        tctl create -f /etc/teleport/github.yaml --force
+      args:
+        executable: /bin/bash
+
+    - name: Ensure Teleport user exists (create via invite token)
+      ansible.builtin.shell: |
+        export TELEPORT_DATA_DIR={{ teleport_data_dir }}
+        export TELEPORT_AUTH_SERVER=127.0.0.1:3023
+        if ! tctl get users {{ teleport_user }} >/dev/null 2>&1; then
+          tctl users add {{ teleport_user }} --roles=admin --logins=root > /tmp/tp_invite.txt
+        fi
+      args:
+        executable: /bin/bash
+        warn: false
+      changed_when: false
+
+    - name: Slurp invite/password file
+      ansible.builtin.slurp:
+        src: /tmp/tp_invite.txt
+      register: invite_token
+
+    - name: Decode and show invite (readable)
+      ansible.builtin.debug:
+        msg: "{{ invite_token.content }}"
+
