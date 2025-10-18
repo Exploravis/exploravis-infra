@@ -35,7 +35,7 @@ jobs:
 
       - name: Get Master Public IP
         id: master_ip
-        run: echo "MASTER_IP=$(bash ./script/get_master_ip.sh)" >> $GITHUB_ENV
+        run: echo "MASTER_IP=$(bash ./scripts/get_master_ip.sh)" >> $GITHUB_ENV
 
       - name: Update No-IP DDNS
         run: |
