@@ -4,7 +4,7 @@
   become: yes
   vars:
     teleport_version: "16.2.0"
-    teleport_user: "eateam2"
+    teleport_user: "eateam3"
     teleport_host: "exploravis.ddns.net"
     teleport_token: "devtoken"
     teleport_data_dir: "/var/lib/teleport"
