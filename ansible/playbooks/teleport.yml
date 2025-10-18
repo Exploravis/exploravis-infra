@@ -4,7 +4,8 @@
   become: yes
   vars:
     teleport_version: "16.2.0"
-    teleport_user: "eateam"
+    teleport_user: "eateam2"
+    teleport_host: "exploravis.ddns.net"
     teleport_token: "devtoken"
     teleport_data_dir: "/var/lib/teleport"
     teleport_log: "/var/log/teleport.log"
@@ -100,7 +101,7 @@
           spec:
             client_id: "Ov23li4CcbWFxrcVPxoO"
             client_secret: "126d818395d512a15ac95f43e056684d9398dc38"
-            redirect_url: "https://{{ ansible_host }}:3080/v1/webapi/github/callback"
+            redirect_url: "https://{{ teleport_host }}:3080/v1/webapi/github/callback"
             display: "GitHub"
             teams_to_roles:
               - organization: "Exploravis"
