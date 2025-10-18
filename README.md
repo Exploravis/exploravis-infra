@@ -8,7 +8,7 @@ Spin up **flexible, scalable, and compliant K3s clusters** in **Azure Cloud**(fo
 - [ ] Modular ansible with playbooks and roles
 - [ ] Use certs with TTL instead of ssh keys(for security and compliance -- rotation)
 - [ ] Ansible roles to setup helm, Prometheus/grafana, k3s dashboard...
-- [ ] 
+
 # Prerequisits
 - You need an azure account(auth through the cli `az login`, or create a principal and save the tokens)
 - create a vault called `wasp-vault` in your az account
