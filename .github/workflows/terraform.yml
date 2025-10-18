@@ -37,6 +37,9 @@ jobs:
         id: master_ip
         run: echo "MASTER_IP=$(bash ./scripts/get_master_ip.sh)" >> $GITHUB_ENV
 
+      - name: Echo Public IP(debug)
+        run: bash ./scripts/get_master_ip.sh
+
       - name: Update No-IP DDNS
         run: |
           curl -s "https://${{ secrets.NOIP_USERNAME }}:${{ secrets.NOIP_PASSWORD }}@dynupdate.no-ip.com/nic/update?hostname=${{ secrets.NOIP_HOST }}&myip=$MASTER_IP"
