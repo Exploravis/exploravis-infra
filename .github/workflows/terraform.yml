@@ -44,6 +44,11 @@ jobs:
           curl -s "https://${{ secrets.NOIP_USERNAME }}:${{ secrets.NOIP_PASSWORD }}@dynupdate.no-ip.com/nic/update?hostname=${{ secrets.NOIP_HOST }}&myip=$MASTER_IP"
 
 
+      - name: Send Slack alert 
+        run: | 
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Terraform infrastructure has been provisioned, NOIP ddns has been configured in https://exploravis.ddns.net/"}' ${{ secrets.SLACK_WEBHOOK }}  
+
+
 
   ansible:
       name: Ansible Kubernetes Deployment
@@ -77,6 +82,11 @@ jobs:
 
         - name: Run Ansible Inventory
           run: bash ./scripts/run_ansible_inv.sh
+
+
+        - name: Send Slack alert 
+          run: | 
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Kubernetes has been set"}' ${{ secrets.SLACK_WEBHOOK }}  
 
 
   teleport:
@@ -114,3 +124,8 @@ jobs:
 
         - name: Run Ansible Inventory
           run: bash ./scripts/setup_teleport.sh
+
+        - name: Send Slack alert 
+          run: | 
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Teleport has been installed and configured on the master VM https://exploravis.ddns.net:3080"}' ${{ secrets.SLACK_WEBHOOK }}  
+
