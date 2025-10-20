@@ -175,16 +175,16 @@
       args:
         executable: /bin/bash
 
-    - name: Ensure Teleport user exists (create via invite token)
+    - name: Ensure Teleport user exists
       ansible.builtin.shell: |
         export TELEPORT_DATA_DIR={{ teleport_data_dir }}
         export TELEPORT_AUTH_SERVER=127.0.0.1:3023
-        if ! tctl get users {{ teleport_user }} >/dev/null 2>&1; then
-          tctl users add {{ teleport_user }} --roles=admin --logins=root > /tmp/tp_invite.txt
-        fi
+        tctl get users {{ teleport_user }} >/dev/null 2>&1 || \
+        tctl users add {{ teleport_user }} --roles=admin --logins=root > /tmp/tp_invite.txt
       args:
         executable: /bin/bash
       changed_when: false
+      ignore_errors: true
 
     # - name: Slurp invite/password file
     #   ansible.builtin.slurp:
