@@ -14,8 +14,6 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      EA_GITHUB_CLIENT_ID: ${{ secrets.EA_GITHUB_CLIENT_ID }}
-      EA_GITHUB_CLIENT_SECRET: ${{ secrets.EA_GITHUB_CLIENT_SECRET }}
 
     defaults:
       run:
@@ -91,6 +89,9 @@ jobs:
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        EA_GITHUB_CLIENT_ID: ${{ secrets.EA_GITHUB_CLIENT_ID }}
+        EA_GITHUB_CLIENT_SECRET: ${{ secrets.EA_GITHUB_CLIENT_SECRET }}
+
       defaults:
         run:
           working-directory: .
