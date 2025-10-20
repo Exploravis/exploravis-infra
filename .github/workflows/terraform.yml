@@ -86,7 +86,7 @@ jobs:
 
         - name: Send Slack alert 
           run: | 
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Kubernetes has been set"}' ${{ secrets.SLACK_WEBHOOK }}  
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Kubernetes has been installed and configured on the cluster"}' ${{ secrets.SLACK_WEBHOOK }}  
 
 
   teleport:
