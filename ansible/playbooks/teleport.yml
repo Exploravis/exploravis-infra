@@ -4,7 +4,7 @@
   become: yes
   vars:
     teleport_version: "16.2.0"
-    teleport_user: "eateam44"
+    teleport_user: "exploravisuser"
     teleport_host: "exploravis.ddns.net"
     teleport_token: "devtoken"
     teleport_data_dir: "/var/lib/teleport"
@@ -175,7 +175,7 @@
       args:
         executable: /bin/bash
 
-    - name: Ensure Teleport user exists
+    - name: Ensure Teleport user exists 
       ansible.builtin.shell: |
         export TELEPORT_DATA_DIR={{ teleport_data_dir }}
         export TELEPORT_AUTH_SERVER=127.0.0.1:3023
