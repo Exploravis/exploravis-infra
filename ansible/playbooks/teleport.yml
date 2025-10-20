@@ -4,7 +4,7 @@
   become: yes
   vars:
     teleport_version: "16.2.0"
-    teleport_user: "eateam3"
+    teleport_user: "eateam"
     teleport_host: "exploravis.ddns.net"
     teleport_token: "devtoken"
     teleport_data_dir: "/var/lib/teleport"
@@ -99,8 +99,8 @@
           metadata:
             name: github
           spec:
-            client_id: "Ov23li4CcbWFxrcVPxoO"
-            client_secret: "126d818395d512a15ac95f43e056684d9398dc38"
+            client_id: "{{ lookup('env', 'GITHUB_CLIENT_ID') }}"
+            client_secret: "{{ lookup('env', 'GITHUB_CLIENT_SECRET') }}"
             redirect_url: "https://{{ teleport_host }}:3080/v1/webapi/github/callback"
             display: "GitHub"
             teams_to_roles:
@@ -186,12 +186,12 @@
         executable: /bin/bash
       changed_when: false
 
-    - name: Slurp invite/password file
-      ansible.builtin.slurp:
-        src: /tmp/tp_invite.txt
-      register: invite_token
-
-    - name: Decode and show invite (readable)
-      ansible.builtin.debug:
-        msg: "{{ invite_token.content }}"
+    # - name: Slurp invite/password file
+    #   ansible.builtin.slurp:
+    #     src: /tmp/tp_invite.txt
+    #   register: invite_token
+    #
+    # - name: Decode and show invite (readable)
+    #   ansible.builtin.debug:
+    #     msg: "{{ invite_token.content }}"
 
