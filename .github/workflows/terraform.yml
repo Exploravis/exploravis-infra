@@ -39,9 +39,10 @@ jobs:
         working-directory: .
 
 
-      - name: Update No-IP DDNS
+      - name: Update No-IP DDNS with API
         run: |
-          curl -s "https://${{ secrets.NOIP_USERNAME }}:${{ secrets.NOIP_PASSWORD }}@dynupdate.no-ip.com/nic/update?hostname=${{ secrets.NOIP_HOST }}&myip=$MASTER_IP"
+            curl -s -u "${{ secrets.NOIP_USERNAME }}:${{ secrets.NOIP_PASSWORD }}" \
+                "https://dynupdate.no-ip.com/nic/update?hostname=${{ secrets.NOIP_HOST }}&myip=$MASTER_IP&wildcard=YES"
 
 
       - name: Send Slack alert 
