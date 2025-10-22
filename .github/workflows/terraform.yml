@@ -47,7 +47,7 @@ jobs:
 
       - name: Send Slack alert 
         run: | 
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Terraform infrastructure has been provisioned, NOIP ddns has been configured in https://exploravis.ddns.net/"}' ${{ secrets.SLACK_WEBHOOK }}  
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Terraform infrastructure has been provisioned, NOIP ddns has been configured in https://teleport.exploravis.ddns.net/"}' ${{ secrets.SLACK_WEBHOOK }}  
 
 
 
@@ -128,5 +128,5 @@ jobs:
 
         - name: Send Slack alert 
           run: | 
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Teleport has been installed and configured on the master VM https://exploravis.ddns.net:3080"}' ${{ secrets.SLACK_WEBHOOK }}  
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Teleport has been installed and configured on the master VM https://teleport.exploravis.ddns.net"}' ${{ secrets.SLACK_WEBHOOK }}  
 
