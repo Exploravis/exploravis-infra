@@ -1,0 +1,38 @@
+- name: Ensure local linux user exists
+  ansible.builtin.user:
+    name: "{{ teleport_user }}"
+    shell: /bin/bash
+    state: present
+
+- name: Deploy admin role template
+  ansible.builtin.template:
+    src: templates/admin-role.yaml.j2
+    dest: /tmp/admin-role.yaml
+    mode: '0644'
+
+- name: Wait for Teleport to be fully ready
+  ansible.builtin.wait_for:
+    path: "{{ teleport_data_dir }}/host_uuid"
+    state: present
+    timeout: 60
+
+- name: Apply admin role
+  ansible.builtin.shell: |
+    tctl create -f /tmp/admin-role.yaml --force
+  args:
+    executable: /bin/bash
+
+- name: Apply GitHub connector
+  ansible.builtin.shell: |
+    tctl create -f /etc/teleport/github.yaml --force
+  args:
+    executable: /bin/bash
+
+- name: Create Teleport admin user if not exists
+  ansible.builtin.shell: |
+    tctl get users {{ teleport_user }} >/dev/null 2>&1 || \
+    tctl users add {{ teleport_user }} --roles=admin --logins=root,ubuntu,azureuser,{{ teleport_user }} > /tmp/tp_invite.txt
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true

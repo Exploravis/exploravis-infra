@@ -1,0 +1,19 @@
+- name: Display invitation info
+  ansible.builtin.shell: |
+    if [ -f /tmp/tp_invite.txt ]; then
+      cat /tmp/tp_invite.txt
+    else
+      echo "User {{ teleport_user }} already exists. To reset invitation run: tctl users reset {{ teleport_user }}"
+    fi
+  args:
+    executable: /bin/bash
+  register: invite_output
+
+- name: Show invitation link
+  debug:
+    msg: "{{ invite_output.stdout }}"
+
+- name: Display Teleport status
+  debug:
+    msg: "{{ teleport_status.stdout }}"
+

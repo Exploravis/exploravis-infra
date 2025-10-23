@@ -1,0 +1,21 @@
+- name: Start and enable Teleport service
+  ansible.builtin.systemd:
+    name: teleport
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: Wait for Teleport auth port
+  ansible.builtin.wait_for:
+    host: 127.0.0.1
+    port: 3025
+    delay: 2
+    timeout: 180
+
+- name: Wait for Teleport proxy port (HTTPS)
+  ansible.builtin.wait_for:
+    host: 127.0.0.1
+    port: 443
+    delay: 5
+    timeout: 90
+

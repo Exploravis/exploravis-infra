@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(pwd)"
 INVENTORY_DIR="$ROOT_DIR/ansible/inventories"
-PLAYBOOK_TELEPORT="$ROOT_DIR/ansible/playbooks/teleport.yml"
+PLAYBOOK_TELEPORT="$ROOT_DIR/ansible/playbooks/install-teleport.yml"
 ANSIBLE_CFG="$ROOT_DIR/ansible/ansible.cfg"
 
 export ANSIBLE_CONFIG="$ANSIBLE_CFG"

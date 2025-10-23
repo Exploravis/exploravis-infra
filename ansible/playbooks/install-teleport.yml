@@ -1,0 +1,8 @@
+---
+- name: Install and start Teleport on master with GitHub auth
+  hosts: master
+  become: yes
+  roles:
+    - teleport-master
+  
+

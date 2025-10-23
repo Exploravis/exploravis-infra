@@ -79,7 +79,7 @@ bash ./scripts/generate_ansible_inv.sh
 **4. Run Ansible playbooks** to setup K3s on master and worker nodes:
 
 ```sh
-bash ./scripts/run_ansible_inv.sh
+bash ./scripts/install_k3s.sh
 ```
 # Workflow Diagram
 ```mermaid
