@@ -82,7 +82,7 @@ jobs:
           run: bash ./scripts/generate_ansible_inv.sh     
 
         - name: Run Ansible Inventory
-          run: bash ./scripts/run_ansible_inv.sh
+          run: bash ./scripts/install_k3s.sh
 
 
         - name: Send Slack alert 

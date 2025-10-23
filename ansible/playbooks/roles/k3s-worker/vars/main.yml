@@ -1,0 +1,1 @@
+k3s_master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"

@@ -1,0 +1,12 @@
+---
+- name: Install and setup K3s on master node
+  hosts: master 
+  become: yes
+  roles:
+    - k3s-master
+
+- name: Install and setup k3s on workers 
+  hosts: workers
+  become: true
+  roles:
+    - k3s-worker

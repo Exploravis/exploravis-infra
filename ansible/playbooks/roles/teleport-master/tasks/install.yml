@@ -1,0 +1,29 @@
+- name: Ensure Teleport data dir exists
+  ansible.builtin.file:
+    path: "{{ teleport_data_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Ensure /etc/teleport exists for config files
+  ansible.builtin.file:
+    path: /etc/teleport
+    state: directory
+    owner: root
+    mode: '0755'
+
+- name: Install Teleport using official script
+  ansible.builtin.shell: |
+    curl https://cdn.teleport.dev/install.sh | bash -s {{ teleport_version }}
+  args:
+    creates: /usr/local/bin/teleport
+
+- name: Kill any stale Teleport process
+  ansible.builtin.shell: |
+    pkill -f "/usr/local/bin/teleport" || true
+    sleep 2
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true
