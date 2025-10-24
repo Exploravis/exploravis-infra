@@ -5,9 +5,8 @@ Spin up **flexible, scalable, and compliant K3s clusters** in **Azure Cloud**(fo
 - [x] remote terraform state support(Terraform Cloud)
 - [x] Managed ssh keys through azure key vault
 - [x] Ansible to fully setup and config kubernetes in the clusters
-- [ ] Modular ansible with playbooks and roles
-- [ ] Use certs with TTL instead of ssh keys(for security and compliance -- rotation)
-- [ ] Ansible roles to setup helm, Prometheus/grafana, k3s dashboard...
+- [x] Modular ansible with playbooks and roles
+- [x] Teleport with github SSO
 
 # Prerequisits
 - You need an azure account(auth through the cli `az login`, or create a principal and save the tokens)
@@ -76,11 +75,16 @@ bash ./scripts/run_tf.sh
 bash ./scripts/generate_ansible_inv.sh
 ```
 
-**4. Run Ansible playbooks** to setup K3s on master and worker nodes:
+**4. Run Ansible playbooks** to setup K3s and Teleport on master and worker nodes :
 
 ```sh
 bash ./scripts/install_k3s.sh
 ```
+to configure the master with Teleport:
+```sh
+bash ./scripts/setup_teleport.sh
+```
+ 
 # Workflow Diagram
 ```mermaid
 flowchart LR
