@@ -9,9 +9,9 @@ Spin up **flexible, scalable, and compliant K3s clusters** in **Azure Cloud**(fo
 - [x] Teleport with github SSO
 
 # Prerequisits
-- You need an azure account(auth through the cli `az login`, or create a principal and save the tokens)
-- create a vault called `wasp-vault` in your az account
-- optional: terraform cloud account for remote state managment
+- A working Azure subscription 
+- Azure key-vault `wasp-vault`
+- Terraform cloud account for remote state managment 
 
 # How to setup
 **1.** create `terraform.tfvars` in `terraform/` with your desired configs:
