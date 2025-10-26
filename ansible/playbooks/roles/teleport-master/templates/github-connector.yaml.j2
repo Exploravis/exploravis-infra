@@ -8,18 +8,18 @@ spec:
   redirect_url: "https://{{ teleport_host | regex_replace(':.*$', '') }}/v1/webapi/github/callback"
   display: "GitHub"
   teams_to_roles:
-    - organization: "Exploravis"
+    - organization: "{{ github_org }}"
       team: "ea-admin"
       roles: ["admin"]
-    - organization: "Exploravis"
+    - organization: "{{ github_org }}"
       team: "ea-team"
       roles: ["admin"]
-    - organization: "Exploravis"
+    - organization: "{{ github_org }}"
       team: "ea-devops"
       roles: ["devops"]
-    - organization: "Exploravis"
+    - organization: "{{ github_org }}"
       team: "ea-developers"
       roles: ["developer"]
-    - organization: "Exploravis"
+    - organization: "{{ github_org }}"
       team: "ea-readonly"
       roles: ["readonly"]
