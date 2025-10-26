@@ -18,9 +18,13 @@ auth_service:
   listen_addr: 0.0.0.0:3025
   cluster_name: {{ teleport_host | regex_replace(':.*$', '') }}
   proxy_listener_mode: multiplex
+  session_recording: node
 
 ssh_service:
   enabled: yes
+  labels:
+    env: dev
+
 
 proxy_service:
   enabled: yes
@@ -34,3 +38,4 @@ kubernetes_service:
   enabled: yes
   listen_addr: 0.0.0.0:3027 
   kubeconfig_file: /etc/rancher/k3s/k3s.yaml
+

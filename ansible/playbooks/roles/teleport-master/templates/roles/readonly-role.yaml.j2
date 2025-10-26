@@ -1,0 +1,19 @@
+kind: role
+version: v8
+metadata:
+  name: readonly
+spec:
+  allow:
+    logins: ["readonly"]                     
+    kubernetes_groups: ["readonly"]         
+    kubernetes_labels:
+      "*": "*"                             
+    kubernetes_resources:
+      - kind: "*"                         
+        namespace: "*"                   
+        name: "*"                       
+        verbs: ["get", "list", "watch"]
+        api_group: "*"                
+  options:
+    forward_agent: false
+    max_session_ttl: 4h              

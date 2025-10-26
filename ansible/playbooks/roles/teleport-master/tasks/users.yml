@@ -6,8 +6,21 @@
 
 - name: Deploy admin role template
   ansible.builtin.template:
-    src: templates/admin-role.yaml.j2
+    src: templates/roles/admin-role.yaml.j2
     dest: /tmp/admin-role.yaml
+    mode: '0644'
+
+- name: Deploy dev role template 
+  ansible.builtin.template:
+    src: templates/roles/developer-role.yaml.j2
+    dest: /tmp/developer-role.yaml
+    mode: '0644'
+
+
+- name: Deploy dev role template 
+  ansible.builtin.template:
+    src: templates/roles/devops-role.yaml.j2
+    dest: /tmp/devops-role.yaml
     mode: '0644'
 
 - name: Wait for Teleport to be fully ready
@@ -19,6 +32,18 @@
 - name: Apply admin role
   ansible.builtin.shell: |
     tctl create -f /tmp/admin-role.yaml --force
+  args:
+    executable: /bin/bash
+
+- name: Apply developer role
+  ansible.builtin.shell: |
+    tctl create -f /tmp/developer-role.yaml --force
+  args:
+    executable: /bin/bash
+
+- name: Apply devops role
+  ansible.builtin.shell: |
+    tctl create -f /tmp/devops-role.yaml --force
   args:
     executable: /bin/bash
 
@@ -36,3 +61,15 @@
     executable: /bin/bash
   changed_when: false
   ignore_errors: true
+
+- name: Copy RBAC template to host
+  ansible.builtin.copy:
+    src: templates/rbac-group.yaml
+    dest: /tmp/rbac-group.yaml
+    mode: '0644'
+
+- name: Apply Kubernetes group RBAC on host
+  ansible.builtin.shell: |
+    kubectl apply -f /tmp/rbac-group.yaml --kubeconfig /etc/rancher/k3s/k3s.yaml
+  args:
+    executable: /bin/bash

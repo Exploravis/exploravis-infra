@@ -9,5 +9,17 @@ spec:
   display: "GitHub"
   teams_to_roles:
     - organization: "{{ github_org }}"
-      team: "{{ github_team }}"
+      team: "ea-admin"
       roles: ["admin"]
+    - organization: "{{ github_org }}"
+      team: "ea-team"
+      roles: ["admin"]
+    - organization: "{{ github_org }}"
+      team: "ea-devops"
+      roles: ["devops"]
+    - organization: "{{ github_org }}"
+      team: "ea-developers"
+      roles: ["developer"]
+    - organization: "{{ github_org }}"
+      team: "ea-readonly"
+      roles: ["readonly"]

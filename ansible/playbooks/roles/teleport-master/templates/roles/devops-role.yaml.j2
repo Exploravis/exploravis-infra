@@ -1,0 +1,21 @@
+kind: role
+version: v8
+metadata:
+  name: devops
+spec:
+  allow:
+    logins: ["devops"]
+    node_labels:                   
+      env: ["dev"]      
+    kubernetes_groups: ["devops"]
+    kubernetes_labels:
+      "*": "*"
+    kubernetes_resources:
+    - kind: '*' 
+      name: '*'
+      namespace: "*"
+      verbs: ['*']
+      api_group: '*'
+
+  options:
+    max_session_ttl: 8h
