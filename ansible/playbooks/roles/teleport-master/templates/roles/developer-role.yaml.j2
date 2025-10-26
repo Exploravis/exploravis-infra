@@ -1,0 +1,20 @@
+kind: role
+version: v8
+metadata:
+  name: developer
+spec:
+  allow:
+    logins: ["developer"]
+    node_labels:                   
+      env: ["dev"]      
+    kubernetes_groups: ["developers"]
+    kubernetes_labels:
+      "*": "*"
+    kubernetes_resources:
+    - kind: '*'
+      name: '*'
+      namespace: "*"
+      verbs: ['*']
+      api_group: '*'
+  options:
+    max_session_ttl: 4h
