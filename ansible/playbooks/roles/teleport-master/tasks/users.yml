@@ -10,6 +10,12 @@
     dest: /tmp/admin-role.yaml
     mode: '0644'
 
+- name: Deploy bot-admin role template
+  ansible.builtin.template:
+    src: templates/roles/bot-admin-role.yaml.j2
+    dest: /tmp/bot-admin-role.yaml
+    mode: '0644'
+
 - name: Deploy dev role template 
   ansible.builtin.template:
     src: templates/roles/developer-role.yaml.j2
@@ -37,6 +43,12 @@
     timeout: 60
 
 - name: Apply admin role
+  ansible.builtin.shell: |
+    tctl create -f /tmp/admin-role.yaml --force
+  args:
+    executable: /bin/bash
+
+- name: Apply bot-admin role
   ansible.builtin.shell: |
     tctl create -f /tmp/admin-role.yaml --force
   args:
