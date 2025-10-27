@@ -47,7 +47,7 @@ resource "azurerm_key_vault_secret" "cluster_public_key" {
   name         = "${random_uuid.cluster_uuid[each.key].result}--public-key"
   value        = tls_private_key.cluster_ssh[each.key].public_key_openssh
   key_vault_id = data.azurerm_key_vault.key.id
-  tags = each.value.tags
+  tags         = each.value.tags
 
 }
 

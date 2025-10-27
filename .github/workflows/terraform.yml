@@ -1,8 +1,8 @@
 name: Terraform Plan and Apply
 on:
-  push:
-    branches:
-      - main  
+  # push:
+  #   branches:
+  #     - main  
   workflow_dispatch:
 
 jobs:
@@ -29,6 +29,13 @@ jobs:
       - run: terraform init
 
       - run: terraform plan -out=tfplan
+
+
+      - name: Validate terraform formatting 
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
 
       - run: terraform apply -auto-approve tfplan
 

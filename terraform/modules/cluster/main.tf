@@ -34,19 +34,19 @@ module "network" {
 }
 
 module "policy" {
-  source    = "../policy"
+  source            = "../policy"
   resource_group_id = azurerm_resource_group.rg.id
 }
 
 
 # Master
 module "master" {
-  source    = "../vm"
+  source = "../vm"
 
-  vm_name   = "${var.cluster_name}-master"
-  vm_size   = local.all_workers[0].instance_size
-  disk_size = local.all_workers[0].disk_size
-  tags      = merge({ node_type = "master" }, local.all_workers[0].tags)
+  vm_name             = "${var.cluster_name}-master"
+  vm_size             = local.all_workers[0].instance_size
+  disk_size           = local.all_workers[0].disk_size
+  tags                = merge({ node_type = "master" }, local.all_workers[0].tags)
   admin_username      = var.admin_username
   ssh_public_key      = var.ssh_public_key
   resource_group_name = azurerm_resource_group.rg.name
