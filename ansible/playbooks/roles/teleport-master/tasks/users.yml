@@ -17,10 +17,17 @@
     mode: '0644'
 
 
-- name: Deploy dev role template 
+- name: Deploy devops role template 
   ansible.builtin.template:
     src: templates/roles/devops-role.yaml.j2
     dest: /tmp/devops-role.yaml
+    mode: '0644'
+
+
+- name: Deploy readonly role template 
+  ansible.builtin.template:
+    src: templates/roles/readonly-role.yaml.j2
+    dest: /tmp/readonly-role.yaml
     mode: '0644'
 
 - name: Wait for Teleport to be fully ready
@@ -44,6 +51,12 @@
 - name: Apply devops role
   ansible.builtin.shell: |
     tctl create -f /tmp/devops-role.yaml --force
+  args:
+    executable: /bin/bash
+
+- name: Apply readonly role
+  ansible.builtin.shell: |
+    tctl create -f /tmp/readonly-role.yaml --force
   args:
     executable: /bin/bash
 
@@ -73,3 +86,4 @@
     kubectl apply -f /tmp/rbac-group.yaml --kubeconfig /etc/rancher/k3s/k3s.yaml
   args:
     executable: /bin/bash
+
