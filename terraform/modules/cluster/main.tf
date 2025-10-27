@@ -33,10 +33,10 @@ module "network" {
   subnet_prefixes     = ["10.0.1.0/24"]
 }
 
-module "policy" {
-  source            = "../policy"
-  resource_group_id = azurerm_resource_group.rg.id
-}
+# module "policy" {
+#   source            = "../policy"
+#   resource_group_id = azurerm_resource_group.rg.id
+# }
 
 
 # Master
