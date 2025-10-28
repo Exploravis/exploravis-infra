@@ -10,6 +10,10 @@ spec:
     kubernetes_labels:
       "*": "*"
     kubernetes_groups: ["system:masters"]
+    rules:
+        - resources: [ '*' ]
+          verbs: [ '*' ]
   options:
     forward_agent: true
     max_session_ttl: 8h0m0s
+  
