@@ -4,6 +4,12 @@
     shell: /bin/bash
     state: present
 
+- name: Deploy admin bot
+  ansible.builtin.template:
+    src: templates/roles/admin-bot-role.yaml.j2
+    dest: /tmp/admin-bot-role.yaml
+    mode: '0644'
+
 - name: Deploy admin role template
   ansible.builtin.template:
     src: templates/roles/admin-role.yaml.j2
@@ -36,11 +42,20 @@
     dest: /tmp/readonly-role.yaml
     mode: '0644'
 
+
+- name: Deploy bot-token yaml
+  ansible.builtin.template:
+    src: templates/bot-token.yaml.j2
+    dest: /tmp/bot-token.yaml
+    mode: '0644'
+
+
 - name: Wait for Teleport to be fully ready
   ansible.builtin.wait_for:
     path: "{{ teleport_data_dir }}/host_uuid"
     state: present
     timeout: 60
+
 
 - name: Apply admin role
   ansible.builtin.shell: |
@@ -48,11 +63,13 @@
   args:
     executable: /bin/bash
 
-- name: Apply bot-admin role
+
+- name: Apply bot admin role
   ansible.builtin.shell: |
-    tctl create -f /tmp/admin-role.yaml --force
+    tctl create -f /tmp/admin-bot-role.yaml --force
   args:
     executable: /bin/bash
+
 
 - name: Apply developer role
   ansible.builtin.shell: |
@@ -77,6 +94,15 @@
     tctl create -f /etc/teleport/github.yaml --force
   args:
     executable: /bin/bash
+
+
+- name: Apply bot token
+  ansible.builtin.shell: |
+    tctl create -f /tmp/bot-token.yaml --force
+  args:
+    executable: /bin/bash
+
+
 
 - name: Create Teleport admin user if not exists
   ansible.builtin.shell: |

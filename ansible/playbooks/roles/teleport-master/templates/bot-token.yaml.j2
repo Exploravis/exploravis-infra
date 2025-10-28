@@ -1,0 +1,24 @@
+kind: token
+version: v2
+metadata:
+  name: github-actions-token
+spec:
+  roles: [Bot]
+
+  join_method: github
+
+  bot_name: github-ci-bot
+
+  github:
+    allow:
+      - repository: "{{ github_infra_repo }}"
+        workflow: "{{ github_infra_repo_workflows }}"
+---
+kind: bot
+version: v1
+metadata:
+  name: github-ci-bot
+spec:
+  roles:
+  - admin
+  - admin-impersonator-bot

@@ -1,0 +1,19 @@
+kind: role
+version: v7
+metadata:
+  name: admin-impersonator-bot
+spec:
+  options:
+    max_session_ttl: 1h
+  allow:
+    join:
+      github:
+        allow:
+          - repository: "{{ github_infra_repo }}"
+            workflow: "{{ github_infra_repo_workflows }}"
+    resources: ['bot']
+    verbs: ['create', 'read']
+
+    impersonate:
+      roles: ['admin-access']
+      users: ["{{ '{{internal.bot_name}}' }}"]
