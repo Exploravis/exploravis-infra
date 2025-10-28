@@ -4,7 +4,7 @@
     shell: /bin/bash
     state: present
 
-- name: Deploy admin bot  
+- name: Deploy admin bot
   ansible.builtin.template:
     src: templates/roles/admin-bot-role.yaml.j2
     dest: /tmp/admin-bot-role.yaml
