@@ -96,7 +96,7 @@
     executable: /bin/bash
 
 
-- name: Apply bot token 
+- name: Apply bot token
   ansible.builtin.shell: |
     tctl create -f /tmp/bot-token.yaml --force
   args:
