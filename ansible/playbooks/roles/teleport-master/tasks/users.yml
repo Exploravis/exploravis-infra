@@ -43,7 +43,7 @@
     mode: '0644'
 
 
-- name: Deploy bot-token yaml 
+- name: Deploy bot-token yaml
   ansible.builtin.template:
     src: templates/bot-token.yaml.j2
     dest: /tmp/bot-token.yaml
