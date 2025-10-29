@@ -1,0 +1,12 @@
+
+- name: Copy LetsEncrypt cert key
+  ansible.builtin.copy:
+    content: "{{ lookup('ansible.builtin.unvault', le_certs_dir + '/teleport.key') }}"
+    dest: /tmp/teleport.key
+    mode: '0644'
+
+- name: Copy LetsEncrypt cert 
+  ansible.builtin.copy:
+    content: "{{ lookup('ansible.builtin.unvault', le_certs_dir + '/teleport.crt') }}"
+    dest: /tmp/teleport.crt
+    mode: '0644'

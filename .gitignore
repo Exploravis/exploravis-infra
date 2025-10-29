@@ -12,6 +12,7 @@ crash.log
 crash.*.log
 .env
 
+**/*.bak
 
 */*.json
 */*.ini

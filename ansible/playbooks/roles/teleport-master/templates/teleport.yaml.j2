@@ -30,9 +30,9 @@ proxy_service:
   enabled: yes
   web_listen_addr: 0.0.0.0:443
   public_addr: {{ teleport_host }}
-  acme:
-    enabled: "yes"
-    email: mahdi.svt5@gmail.com
+  https_keypairs:
+    - cert_file: /tmp/teleport.crt
+      key_file: /tmp/teleport.key
 
 kubernetes_service:
   enabled: yes
