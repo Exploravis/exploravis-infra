@@ -46,15 +46,15 @@ jobs:
         working-directory: .
 
 
-      - name: Update No-IP DDNS with API
+      - name: Update Dynu DDNS
         run: |
-            curl -s -u "${{ secrets.NOIP_USERNAME }}:${{ secrets.NOIP_PASSWORD }}" \
-                "https://dynupdate.no-ip.com/nic/update?hostname=${{ secrets.NOIP_HOST }}&myip=$MASTER_IP&wildcard=YES"
+          curl -s "https://api.dynu.com/nic/update?hostname=${{ secrets.DYNU_HOSTNAME }}&myip=$MASTER_IP" \
+            -H "Authorization: Basic $(echo -n ${{ secrets.DYNU_CLIENT_ID }}:${{ secrets.DYNU_SECRET }} | base64)"
 
 
       - name: Send Slack alert 
         run: | 
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Terraform infrastructure has been provisioned, NOIP ddns has been configured in https://teleport.exploravis.ddns.net/"}' ${{ secrets.SLACK_WEBHOOK }}  
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Terraform infrastructure has been provisioned, dynu ddns has been configured in https://teleport.exploravis.mywire.org/"}' ${{ secrets.SLACK_WEBHOOK }}  
 
 
 
@@ -136,5 +136,5 @@ jobs:
 
         - name: Send Slack alert 
           run: | 
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Teleport has been installed and configured on the master VM https://teleport.exploravis.ddns.net"}' ${{ secrets.SLACK_WEBHOOK }}  
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Teleport has been installed and configured on the master VM  https://teleport.exploravis.mywire.org"}' ${{ secrets.SLACK_WEBHOOK }}  
 

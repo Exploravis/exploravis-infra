@@ -1,18 +1,27 @@
 kind: role
-version: v5
+version: v7
 metadata:
   name: admin
 spec:
   allow:
-    logins: ["{{ teleport_user }}", "root", ]
+    app_labels:
+      '*': '*'
+    logins: ['root', "{{ansible_user}}"]
     node_labels:
-      "*": "*"
+      '*': '*'
+    
     kubernetes_labels:
-      "*": "*"
-    kubernetes_groups: ["system:masters"]
+      '*': '*'
+    kubernetes_groups: ['system:masters']
+    
+    db_labels:
+      '*': '*'
+    
     rules:
-        - resources: [ '*' ]
-          verbs: [ '*' ]
+      - resources: ['*']
+        verbs: ['*']
+  
   options:
     forward_agent: true
-    max_session_ttl: 8h0m0s
+    max_session_ttl: 8760h0m0s
+    pin_source_ip: false

@@ -31,7 +31,7 @@ proxy_service:
   web_listen_addr: 0.0.0.0:443
   public_addr: {{ teleport_host }}
   https_keypairs:
-    - cert_file: /tmp/teleport.crt
+    - cert_file: /tmp/teleport.cer
       key_file: /tmp/teleport.key
 
 kubernetes_service:
@@ -39,3 +39,15 @@ kubernetes_service:
   listen_addr: 0.0.0.0:3027 
   kubeconfig_file: /etc/rancher/k3s/k3s.yaml
 
+
+app_service:
+  enabled: true
+  debug_app: true 
+  resources:
+    - labels:
+        "*": "*"        
+  apps:
+    - name: argocd
+      uri: "http://localhost:32001"            
+      public_addr: "argocd.teleport.exploravis.mywire.org"
+      insecure_skip_verify: true

@@ -1,6 +1,6 @@
 teleport_version: "18.2.4"
 teleport_user: "exploravisuser"
-teleport_host: "teleport.exploravis.ddns.net"
+teleport_host: "teleport.exploravis.mywire.org"
 teleport_token: "devtoken"
 teleport_data_dir: "/var/lib/teleport"
 teleport_log: "/var/log/teleport.log"
