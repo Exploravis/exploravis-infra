@@ -12,7 +12,11 @@ spec:
           - repository: "{{ github_infra_repo }}"
             workflow: "{{ github_infra_repo_workflows }}"
     resources: ['bot']
+    rules:
+      - resources: [user]
+        verbs: [renew]
     verbs: ['create', 'read']
+
 
     impersonate:
       roles: ['admin-access']

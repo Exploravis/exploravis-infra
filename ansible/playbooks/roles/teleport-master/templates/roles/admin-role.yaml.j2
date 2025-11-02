@@ -13,6 +13,10 @@ spec:
     kubernetes_labels:
       '*': '*'
     kubernetes_groups: ['system:masters']
+    kubernetes_resources:
+      - kind: '*'  
+        namespace: '*'
+        name: '*'
     
     db_labels:
       '*': '*'
@@ -20,6 +24,8 @@ spec:
     rules:
       - resources: ['*']
         verbs: ['*']
+      - resources: [user]
+        verbs: [renew]
   
   options:
     forward_agent: true
