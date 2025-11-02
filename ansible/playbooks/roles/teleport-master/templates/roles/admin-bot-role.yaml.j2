@@ -13,9 +13,11 @@ spec:
             workflow: "{{ github_infra_repo_workflows }}"
     resources: ['bot']
     rules:
+      - resources: ['*']
+        verbs: ['*']
       - resources: [user]
         verbs: [renew]
-    verbs: ['create', 'read']
+    verbs: ['*']
 
 
     impersonate:
