@@ -16,11 +16,11 @@
     dest: /tmp/admin-role.yaml
     mode: '0644'
 
-- name: Deploy bot-admin role template
-  ansible.builtin.template:
-    src: templates/roles/bot-admin-role.yaml.j2
-    dest: /tmp/bot-admin-role.yaml
-    mode: '0644'
+# - name: Deploy bot-admin role template
+#   ansible.builtin.template:
+#     src: templates/roles/bot-admin-role.yaml.j2
+#     dest: /tmp/bot-admin-role.yaml
+#     mode: '0644'
 
 - name: Deploy dev role template 
   ansible.builtin.template:
