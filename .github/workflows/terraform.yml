@@ -4,9 +4,23 @@ on:
   #   branches:
   #     - main  
   workflow_dispatch:
+    inputs:
+      run_terraform:
+        description: 'Run Terraform job'
+        required: false
+        default: 'true'
+      run_ansible:
+        description: 'Run Ansible job'
+        required: false
+        default: 'true'
+      run_teleport:
+        description: 'Run Teleport job'
+        required: false
+        default: 'true'
 
 jobs:
   terraform:
+    if: ${{ github.event.inputs.run_terraform =! 'false' }}
     runs-on: ubuntu-latest
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
@@ -101,6 +115,7 @@ jobs:
 
 
   ansible:
+      if: ${{ github.event.inputs.run_ansible != 'false' }}
       name: Ansible Kubernetes Deployment
       runs-on: ubuntu-latest
       needs: terraform   
@@ -140,6 +155,7 @@ jobs:
 
 
   teleport:
+      if: ${{ github.event.inputs.run_teleport != 'false' }}
       name: Install and setup Teleport with github 
       runs-on: ubuntu-latest
       needs: ansible
