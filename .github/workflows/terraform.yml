@@ -20,7 +20,7 @@ on:
 
 jobs:
   terraform:
-    if: ${{ github.event.inputs.run_terraform =! 'false' }}
+    if: ${{ github.event.inputs.run_terraform != 'false' }}
     runs-on: ubuntu-latest
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
