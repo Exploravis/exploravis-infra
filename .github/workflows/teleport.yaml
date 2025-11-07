@@ -3,6 +3,7 @@ on:
   workflow_call:
   workflow_dispatch:
 
+jobs:
   teleport:
       name: Install and setup Teleport with github 
       runs-on: ubuntu-latest

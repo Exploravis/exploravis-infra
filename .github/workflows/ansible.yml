@@ -1,7 +1,8 @@
-name: Teleport Workflow
+name: Ansible Workflow
 on:
   workflow_call:
   workflow_dispatch:
+jobs:
   ansible:
       name: Ansible Kubernetes Deployment
       runs-on: ubuntu-latest
