@@ -4,23 +4,8 @@ on:
   #   branches:
   #     - main  
   workflow_dispatch:
-    inputs:
-      run_terraform:
-        description: 'Run Terraform job'
-        required: false
-        default: 'true'
-      run_ansible:
-        description: 'Run Ansible job'
-        required: false
-        default: 'true'
-      run_teleport:
-        description: 'Run Teleport job'
-        required: false
-        default: 'true'
-
 jobs:
   terraform:
-    if: ${{ github.event.inputs.run_terraform == 'true' }}
     runs-on: ubuntu-latest
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
@@ -115,84 +100,10 @@ jobs:
 
 
   ansible:
-      if: ${{ github.event.inputs.run_ansible == 'true' }}
-      name: Ansible Kubernetes Deployment
-      runs-on: ubuntu-latest
-      needs: terraform   
-      env:
-        TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      defaults:
-        run:
-          working-directory: .
-
-      steps:
-        - name: Checkout repo
-          uses: actions/checkout@v2
-
-
-        - uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_version: latest
-
-        - run: terraform init -reconfigure
-          working-directory: ./terraform
-
-
-        - name: Generate ansible inventory
-          run: bash ./scripts/generate_ansible_inv.sh     
-
-        - name: Run Ansible Inventory
-          run: bash ./scripts/install_k3s.sh
-
-
-        - name: Send Slack alert 
-          run: | 
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Kubernetes has been installed and configured on the cluster"}' ${{ secrets.SLACK_WEBHOOK }}  
-
+    needs: terraform
+    uses: ./.github/workflows/ansible.yml
 
   teleport:
-      if: ${{ github.event.inputs.run_teleport == 'true' }}
-      name: Install and setup Teleport with github 
-      runs-on: ubuntu-latest
-      needs: ansible
-      env:
-        TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        EA_GITHUB_CLIENT_ID: ${{ secrets.EA_GITHUB_CLIENT_ID }}
-        EA_GITHUB_CLIENT_SECRET: ${{ secrets.EA_GITHUB_CLIENT_SECRET }}
-        ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
-
-      defaults:
-        run:
-          working-directory: .
-
-      steps:
-        - name: Checkout repo
-          uses: actions/checkout@v2
-
-
-        - uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_version: latest
-
-        - run: terraform init -reconfigure
-          working-directory: ./terraform
-
-
-        - name: Generate ansible inventory
-          run: bash ./scripts/generate_ansible_inv.sh     
-
-        - name: Run Ansible Inventory
-          run: bash ./scripts/setup_teleport.sh
-
-        - name: Send Slack alert 
-          run: | 
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Teleport has been installed and configured on the master VM  https://teleport.exploravis.mywire.org"}' ${{ secrets.SLACK_WEBHOOK }}  
+    needs: ansible
+    uses: ./.github/workflows/teleport.yml
 
