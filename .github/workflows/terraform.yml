@@ -20,7 +20,7 @@ on:
 
 jobs:
   terraform:
-    if: ${{ github.event.inputs.run_terraform != 'false' }}
+    if: ${{ github.event.inputs.run_terraform == 'true' }}
     runs-on: ubuntu-latest
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
@@ -115,7 +115,7 @@ jobs:
 
 
   ansible:
-      if: ${{ github.event.inputs.run_ansible != 'false' }}
+      if: ${{ github.event.inputs.run_ansible == 'true' }}
       name: Ansible Kubernetes Deployment
       runs-on: ubuntu-latest
       needs: terraform   
@@ -155,7 +155,7 @@ jobs:
 
 
   teleport:
-      if: ${{ github.event.inputs.run_teleport != 'false' }}
+      if: ${{ github.event.inputs.run_teleport == 'true' }}
       name: Install and setup Teleport with github 
       runs-on: ubuntu-latest
       needs: ansible
