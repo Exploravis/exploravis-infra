@@ -11,15 +11,14 @@ spec:
         allow:
           - repository: "{{ github_infra_repo }}"
             workflow: "{{ github_infra_repo_workflows }}"
-    resources: ['bot']
     rules:
       - resources: ['*']
         verbs: ['*']
-      - resources: [user]
-        verbs: [renew]
-    verbs: ['*']
 
+    # Use Kubernetes groups instead of direct resource mapping
+    kubernetes_groups: ["system:masters"]
+    kubernetes_labels:
+      '*': '*'
 
-    impersonate:
-      roles: ['admin-access']
-      users: ["{{ '{{internal.bot_name}}' }}"]
+    # Remove the kubernetes_resources section - let Teleport handle the mapping
+  deny: {}
