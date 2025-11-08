@@ -14,6 +14,8 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+      EA_GITHUB_CLIENT_ID: ${{ secrets.EA_GITHUB_CLIENT_ID }}
+      EA_GITHUB_CLIENT_SECRET: ${{ secrets.EA_GITHUB_CLIENT_SECRET }}
     defaults:
       run:
         working-directory: ./terraform  
@@ -120,4 +122,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK}}
+      EA_GITHUB_CLIENT_ID: ${{ secrets.EA_GITHUB_CLIENT_ID }}
+      EA_GITHUB_CLIENT_SECRET: ${{ secrets.EA_GITHUB_CLIENT_SECRET }}
       ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}

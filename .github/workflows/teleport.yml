@@ -16,6 +16,12 @@ on:
         required: true
       ANSIBLE_VAULT_PASSWORD: 
         required: true
+      ANSIBLE_VAULT_PASSWORD: 
+        required: true
+      EA_GITHUB_CLIENT_SECRET: 
+        required: true
+      EA_GITHUB_CLIENT_ID: 
+        required: true
   workflow_dispatch:
 
 jobs:
