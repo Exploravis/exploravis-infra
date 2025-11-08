@@ -12,6 +12,8 @@ on:
         required: true
       ARM_TENANT_ID:
         required: true
+      SLACK_WEBHOOK: 
+        required: true
   workflow_dispatch:
 jobs:
   ansible:
@@ -23,6 +25,7 @@ jobs:
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK}}
       defaults:
         run:
           working-directory: .

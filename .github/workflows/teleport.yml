@@ -12,6 +12,8 @@ on:
         required: true
       ARM_TENANT_ID:
         required: true
+      SLACK_WEBHOOK: 
+        required: true
   workflow_dispatch:
 
 jobs:
@@ -27,6 +29,7 @@ jobs:
         EA_GITHUB_CLIENT_ID: ${{ secrets.EA_GITHUB_CLIENT_ID }}
         EA_GITHUB_CLIENT_SECRET: ${{ secrets.EA_GITHUB_CLIENT_SECRET }}
         ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK}}
 
       defaults:
         run:
