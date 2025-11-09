@@ -47,7 +47,7 @@ jobs:
         working-directory: .
 
       - name: Get Ingress Public IP
-        id: master_ip
+        id: ingress_ip 
         run: echo "INGRESS_IP=$(bash ./scripts/get_ingress_ip.sh)" >> $GITHUB_ENV
         working-directory: .
 
