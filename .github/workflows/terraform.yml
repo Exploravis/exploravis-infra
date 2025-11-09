@@ -102,7 +102,7 @@ jobs:
 
 
             # Update staging subdomain
-            curl -X POST "https://api.dynu.com/v2/dns/12956376/record/16541286" \
+            curl -X POST "https://api.dynu.com/v2/dns/12956376/record/16836371" \
               -H "accept: application/json" \
               -H "API-Key: ${{ secrets.DYNU_API_KEY }}" \
               -H "Content-Type: application/json" \
