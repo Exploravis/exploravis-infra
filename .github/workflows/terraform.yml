@@ -46,6 +46,11 @@ jobs:
         run: echo "MASTER_IP=$(bash ./scripts/get_master_ip.sh)" >> $GITHUB_ENV
         working-directory: .
 
+      - name: Get Ingress Public IP
+        id: master_ip
+        run: echo "INGRESS_IP=$(bash ./scripts/get_ingress_ip.sh)" >> $GITHUB_ENV
+        working-directory: .
+
 
       - name: Update All Dynu DNS Records
         run: |
@@ -94,6 +99,21 @@ jobs:
               "group": "",
               "ipv4Address": "'$MASTER_IP'"
             }'
+
+
+            # Update staging subdomain
+            curl -X POST "https://api.dynu.com/v2/dns/12956376/record/16541286" \
+              -H "accept: application/json" \
+              -H "API-Key: ${{ secrets.DYNU_API_KEY }}" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "nodeName": "staging",
+                "recordType": "A",
+                "ttl": 120,
+                "state": true,
+                "group": "",
+                "ipv4Address": "'$INGRESS_IP'"
+              }'
 
       - name: Send Slack alert 
         run: | 
