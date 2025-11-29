@@ -6,7 +6,7 @@ clusters = {
     workers = [
       {
         name          = "worker-group-1"
-        instance_size = "Standard_B2s"
+        instance_size = "Standard_B1ms"
         disk_size     = 30
         count         = 2
         tags          = { role = "ms1", owner = "exploravis-infra" }

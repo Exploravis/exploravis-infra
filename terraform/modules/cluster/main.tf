@@ -44,7 +44,7 @@ module "master" {
   source = "../vm"
 
   vm_name             = "${var.cluster_name}-master"
-  vm_size             = local.all_workers[0].instance_size
+  vm_size             = "Standard_B2s" 
   disk_size           = local.all_workers[0].disk_size
   tags                = merge({ node_type = "master" }, local.all_workers[0].tags)
   admin_username      = var.admin_username
