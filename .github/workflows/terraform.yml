@@ -101,19 +101,37 @@ jobs:
             }'
 
 
-            # Update staging subdomain
-            curl -X POST "https://api.dynu.com/v2/dns/12956376/record/16836371" \
-              -H "accept: application/json" \
-              -H "API-Key: ${{ secrets.DYNU_API_KEY }}" \
-              -H "Content-Type: application/json" \
-              -d '{
-                "nodeName": "staging",
-                "recordType": "A",
-                "ttl": 120,
-                "state": true,
-                "group": "",
-                "ipv4Address": "'$INGRESS_IP'"
-              }'
+      - name: Update dev-exploravis DNS (root + wildcard)
+        run: |
+          DEV_ZONE_ID=13272618 # this is the dev dns zone id
+
+          curl -X POST "https://api.dynu.com/v2/dns/$DEV_ZONE_ID/record/16541388" \
+            -H "accept: application/json" \
+            -H "API-Key: ${{ secrets.DYNU_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "nodeName": "",
+              "recordType": "A",
+              "ttl": 120,
+              "state": true,
+              "ipv4Address": "'$MASTER_IP'"
+            }'
+
+          curl -X POST "https://api.dynu.com/v2/dns/$DEV_ZONE_ID" \
+            -H "accept: application/json" \
+            -H "API-Key: ${{ secrets.DYNU_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "id": "'$DEV_ZONE_ID'",
+              "name": "dev-exploravis.mywire.org",
+              "unicodeName": "dev-exploravis.mywire.org",
+              "ipv4Address": "'$INGRESS_IP'",
+              "ttl": 120,
+              "ipv4": true,
+              "ipv6": false,
+              "ipv4WildcardAlias": true,
+              "ipv6WildcardAlias": false
+            }'
 
       - name: Send Slack alert 
         run: | 
