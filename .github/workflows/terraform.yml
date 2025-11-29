@@ -105,7 +105,7 @@ jobs:
         run: |
           DEV_ZONE_ID=13272618 # this is the dev dns zone id
 
-          curl -X POST "https://api.dynu.com/v2/dns/$DEV_ZONE_ID/record/16541388" \
+          curl -X POST "https://api.dynu.com/v2/dns/$DEV_ZONE_ID/record" \
             -H "accept: application/json" \
             -H "API-Key: ${{ secrets.DYNU_API_KEY }}" \
             -H "Content-Type: application/json" \
